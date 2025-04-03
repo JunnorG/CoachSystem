@@ -3,7 +3,8 @@
   "projectname": "WechatFrontend",
   "setting": {
     "compileHotReLoad": true,
-    "skylineRenderEnable": false
+    "skylineRenderEnable": false,
+    "urlCheck": false
   },
   "libVersion": "3.4.9"
 }

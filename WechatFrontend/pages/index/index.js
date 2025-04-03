@@ -1,4 +1,5 @@
 import { BOOKING_STATUS } from '../../utils/enum';
+import { fetchCoaches } from '../../apis/coachesAPI';
 const app = getApp()
 Page({
   data: {
@@ -11,6 +12,11 @@ Page({
       { id: 2, name: '教练B', slots: [] },
       { id: 3, name: '教练C', slots: [] }
     ],
+    coachesMetadataRes: {
+      loading: false,
+      coachMetada: [],
+      error: null
+    },
     userInfo: null,
     credit: app.globalData.credit,
     BOOKING_STATUS
@@ -44,10 +50,17 @@ Page({
     });
   },
 
-  onShow() {
+  async onShow() {
+    // 更新积分
     this.setData({
       credit: app.getCredit()
-    })
+    });
+    
+    // 加载教练数据
+    await this.fetchTennisCoaches();
+    
+    // 更新教练名字
+    this.updateCoachesFromMetadata();
   },
 
   // 处理预定/取消预定 - 优化版本
@@ -143,5 +156,58 @@ Page({
       title: `已切换到${selectedDate}`,
       icon: 'none'
     });
-  }
+  },
+
+  // 获取网球教练数据
+  async fetchTennisCoaches() {
+    this.setData({
+      coachesMetadataRes: {
+        ...this.data.coachesMetadataRes,
+        loading: true,
+        error: null
+      }
+    });
+    
+    try {
+      const result = await fetchCoaches('网球');
+      this.setData({
+        coachesMetadataRes: {
+          coachMetada: result,
+          loading: false,
+          error: null,
+        }
+      });
+    } catch (error) {
+      console.error('请求失败', error);
+      this.setData({
+        coachesMetadataRes: {
+          ...this.data.coachesMetadataRes,
+          loading: false,
+          error: error.message || '加载失败'
+        }
+      });
+      wx.showToast({
+        title: '加载失败',
+        icon: 'none'
+      });
+    }
+  },
+
+  // 从元数据更新教练名字
+  updateCoachesFromMetadata() {
+    if (this.data.coachesMetadataRes.coachMetada.length > 0) {
+      const updatedCoaches = this.data.coaches.map((coach, index) => {
+        // 确保有对应的元数据
+        const metadata = this.data.coachesMetadataRes.coachMetada[index];
+        return {
+          ...coach,
+          name: metadata ? metadata.Name : coach.name
+        };
+      });
+      
+      this.setData({
+        coaches: updatedCoaches
+      });
+    }
+  },
 });
