@@ -1,0 +1,23 @@
+<view class="container">
+  <view class="user-info">
+    <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
+    <view class="nickname">{{userInfo.nickName}}</view>
+  </view>
+  
+  <view class="credit-info">
+    <view class="credit-title">剩余课时</view>
+    <view class="credit-value">{{credit}} 小时</view>
+    <view class="credit-note">(半小时为一个课时单位)</view>
+  </view>
+  
+  <view class="reservation-history">
+    <view class="section-title">预订记录</view>
+    <view class="history-list">
+      <view class="history-item" wx:for="{{history}}" wx:key="id">
+        <view class="history-date">{{item.date}}</view>
+        <view class="history-field">场地{{item.field}}</view>
+        <view class="history-time">{{item.time}}</view>
+      </view>
+    </view>
+  </view>
+</view>

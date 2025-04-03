@@ -1,0 +1,56 @@
+<view class="container">
+  <!-- 日期选择 -->
+  <view class="date-picker">
+    <picker mode="date" fields="day" start="{{startDate}}" end="{{endDate}}" value="{{currentDate}}" bindchange="dateChange">
+      <view class="date">{{currentDate}}</view>
+    </picker>
+  </view>
+  
+  <!-- 外层垂直滚动容器 -->
+  <scroll-view class="outer-scroll" scroll-y>
+    <!-- 内层水平滚动容器 -->
+    <scroll-view class="inner-scroll" scroll-x>
+      <view class="booking-container">
+        <!-- 时间列 -->
+        <view class="time-column">
+          <view class="time-cell header-cell">时间</view>
+          <view class="time-cell" wx:for="{{timeSlots}}" wx:key="time">{{item}}</view>
+        </view>
+        
+        <!-- 教练列 -->
+        <block wx:for="{{coaches}}" wx:key="id">
+          <view class="coach-column">
+            <view class="coach-cell header-cell">{{item.name}}</view>
+            <view 
+              class="coach-cell {{subItem.status === BOOKING_STATUS.BOOKED ? 'booked' : 'available'}}" 
+              wx:for="{{item.slots}}" 
+              wx:for-item="subItem"  
+              wx:for-index="slotIndex"
+              wx:key="time"
+              data-coach-id="{{item.id}}"
+              data-time-index="{{slotIndex}}"
+              bindtap="handleBooking"
+            >
+              {{subItem.status === BOOKING_STATUS.BOOKED ? '已预定' : '可预定'}}
+            </view>
+          </view>
+        </block>
+      </view>
+    </scroll-view>
+  </scroll-view>
+  
+  <!-- 底部信息 -->
+  <view class="footer">
+    <view class="credit-info">剩余课时: {{credit}}小时</view>
+    <view class="legend">
+      <view class="legend-item">
+        <view class="legend-color available"></view>
+        <text>可预定</text>
+      </view>
+      <view class="legend-item">
+        <view class="legend-color booked"></view>
+        <text>已预定</text>
+      </view>
+    </view>
+  </view>
+</view>
