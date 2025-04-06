@@ -16,8 +16,7 @@ Page({
       { coach: { Name: '老李' }, timeSlot: 22, status: BOOKING_STATUS.BOOKED },
       { coach: { Name: '老李' }, timeSlot: 23, status: BOOKING_STATUS.CANCELED },
       { coach: { Name: '老李' }, timeSlot: 24, status: BOOKING_STATUS.BOOKED },
-      { coach: { Name: '老李' }, timeSlot: 25
-      , status: BOOKING_STATUS.AVAILABLE },
+      { coach: { Name: '老李' }, timeSlot: 25, status: BOOKING_STATUS.AVAILABLE },
     ],
     coachesMetadataRes: {
       loading: false,
@@ -25,27 +24,24 @@ Page({
       error: null
     },
     userInfo: null,
-    credit: app.globalData.credit,
-    BOOKING_STATUS
+    BOOKING_STATUS,
+    court: '朝阳网球中心',
+    lessons: [
+      {
+        name: '老李',
+        classHours: 9
+      }
+    ]
   },
 
   onLoad() {
-    // 初始化时间槽位(10:00-22:00，每半小时)
-    const timeSlots = [];
-    for (let hour = 10; hour <= 22; hour++) {
-      timeSlots.push(`${hour}:00`);
-      if (hour < 22) {
-        timeSlots.push(`${hour}:30`);
-      }
-    }
   },
 
   async onShow() {
-    // 更新积分
     this.setData({
-      credit: app.getCredit()
-    });
-    
+      lessons: app.getLessonsOfCourt(this.data.court).coaches
+    })
+
     // 加载教练数据
     await this.fetchTennisCoaches();
     
@@ -55,8 +51,8 @@ Page({
 
   // 处理预定/取消预定 - 优化版本
   handleBooking(e) {
-    const { coachId, timeIndex } = e.currentTarget.dataset;
-    const { coaches, timeSlots, credit } = this.data;
+    const { coachId, coachName, timeIndex } = e.currentTarget.dataset;
+    const { coaches, timeSlots } = this.data;
     const coach = this.getCoach(coaches, coachId);
     const slot = coach.slots[timeIndex];
     const time = timeSlots[timeIndex];
@@ -64,39 +60,12 @@ Page({
     // 立即更新本地数据（临时状态）
     const newCoaches = JSON.parse(JSON.stringify(coaches)); // 深拷贝
     
-    if (slot.status === BOOKING_STATUS.BOOKED) {
-      // 取消预定流程
-      wx.showModal({
-        title: '取消预定确认',
-        content: `确定要取消${coach.name} ${time}的预定吗?`,
-        success: (res) => {
-          var newCoach = this.getCoach(newCoaches, coachId)
-          if (res.confirm) {
-            // 更新数据
-            newCoach.slots[timeIndex].status = BOOKING_STATUS.AVAILABLE;
-            newCoach.slots[timeIndex].bookedBy = null;
-            
-            const newCredit = credit+0.5
-            app.setCredit(newCredit)
-            this.setData({
-              coaches: newCoaches,
-              credit: newCredit
-            }, () => {
-              // 数据更新完成后的回调
-              wx.showToast({
-                title: '取消成功',
-                icon: 'success'
-              });
-              console.log('更新后的数据:', this.data.coaches);
-            });
-          }
-        }
-      });
-    } else {
+    if (slot.status === BOOKING_STATUS.AVAILABLE) {
       // 新预定流程
-      if (credit < 0.5) {
+      const leftCredit = app.getLessons(this.data.court, coachName)
+      if (leftCredit < 0.5) {
         wx.showToast({
-          title: '课时不足，无法预定',
+          title: `你在教练${coachName}处课时不足，无法预定`,
           icon: 'none'
         });
         return;
@@ -104,7 +73,7 @@ Page({
 
       wx.showModal({
         title: '预定确认',
-        content: `确定要预定${coach.name} ${time}的课程吗?`,
+        content: `确定要预定${coachName} ${timeSlots[timeIndex].time}的课程吗?`,
         success: (res) => {
           var newCoach = this.getCoach(newCoaches, coachId)
           if (res.confirm) {
@@ -112,11 +81,11 @@ Page({
             newCoach.slots[timeIndex].status = BOOKING_STATUS.BOOKED;
             newCoach.slots[timeIndex].bookedBy = 'currentUser';
             
-            const newCredit = credit-0.5
-            app.setCredit(newCredit)
+            app.updateLessons(this.data.court, coachName, leftCredit-0.5)
+
             this.setData({
               coaches: newCoaches,
-              credit: newCredit
+              lessons: app.getLessonsOfCourt(this.data.court).coaches
             }, () => {
               // 数据更新完成后的回调
               wx.showToast({

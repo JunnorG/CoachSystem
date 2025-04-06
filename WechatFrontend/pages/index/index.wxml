@@ -29,6 +29,7 @@
               wx:key="time"
               data-coach-id="{{item.Id}}"
               data-time-index="{{slotIndex}}"
+              data-coach-name="{{item.Name}}"
               bindtap="handleBooking"
             >
               {{subItem.status === BOOKING_STATUS.BOOKED ? '已预定' : subItem.status === BOOKING_STATUS.AVAILABLE ? '可预定' : '已取消' }}
@@ -41,7 +42,6 @@
   
   <!-- 底部信息 -->
   <view class="footer">
-    <view class="credit-info">剩余课时: {{credit}}小时</view>
     <view class="legend">
       <view class="legend-item">
         <view class="legend-color available"></view>
@@ -51,6 +51,16 @@
         <view class="legend-color booked"></view>
         <text>已预定</text>
       </view>
+      <view class="legend-item">
+        <view class="legend-color canceled"></view>
+        <text>已取消</text>
+      </view>
     </view>
+    
+    <view class="credit-info">剩余课时</view>
+    <block wx:for="{{lessons}}" wx:key="id">
+      <view class="credit-info">{{item.name}} --- {{item.classHours}}小时</view>
+    </block>
+    
   </view>
 </view>

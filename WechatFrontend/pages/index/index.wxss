@@ -8,14 +8,14 @@
 
 /* 日期选择器 */
 .date-picker {
-  padding: 15px;
+  padding: 15rpx;
   text-align: center;
   background-color: #fff;
-  box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+  box-shadow: 0 2rpx 5rpx rgba(0,0,0,0.1);
 }
 
 .date {
-  font-size: 18px;
+  font-size: 40rpx;
   font-weight: bold;
   color: #333;
 }
@@ -32,7 +32,7 @@
 /* 外层滚动容器 - 垂直滚动 */
 .outer-scroll {
   flex: 1;
-  height: calc(100vh - 250px); /* 根据实际高度调整 */
+  height: calc(100vh - 500rpx); /* 根据实际高度调整 */
 }
 
 /* 内层滚动容器 - 水平滚动 */
@@ -51,7 +51,7 @@
 
 /* 时间列 - 固定宽度 */
 .time-column {
-  width: 80px;
+  width: 220rpx;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -59,7 +59,7 @@
 
 /* 教练列 - 固定宽度 */
 .coach-column {
-  width: 100px;
+  width: 170rpx;
   flex-shrink: 0;
   display: flex;
   flex-direction: column;
@@ -68,16 +68,16 @@
 
 /* 单元格通用样式 - 添加最小高度保证对齐 */
 .time-cell, .coach-cell {
-  min-height: 40px;
+  min-height: 60rpx;
   height: auto;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 2px;
-  border-radius: 6px;
-  font-size: 12px;
+  margin: 5rpx;
+  border-radius: 10rpx;
+  font-size: 24rpx;
   transition: all 0.2s;
-  padding: 5px;
+  padding: 5rpx;
   box-sizing: border-box;
   text-align: center;
   word-break: break-all;
@@ -118,35 +118,36 @@
 
 /* 底部信息 */
 .footer {
-  padding: 10px;
+  margin-top: 15rpx;
+  padding: 15rpx;
   background-color: #fff;
-  display: flex;
   justify-content: space-between;
   align-items: center;
-  border-top: 1px solid #eee;
+  border-top: 2rpx solid #eee;
 }
 
 .credit-info {
-  font-size: 14px;
+  font-size: 25rpx;
   color: #333;
 }
 
 .legend {
   display: flex;
+  padding: 20rpx;
 }
 
 .legend-item {
   display: flex;
   align-items: center;
-  margin-left: 15px;
-  font-size: 12px;
+  margin-left: 20rpx;
+  font-size: 24rpx;
 }
 
 .legend-color {
-  width: 12px;
-  height: 12px;
-  border-radius: 3px;
-  margin-right: 5px;
+  width: 24rpx;
+  height: 24rpx;
+  border-radius: 5rpx;
+  margin-right: 8rpx;
 }
 
 .legend-color.available {
@@ -155,4 +156,8 @@
 
 .legend-color.booked {
   background-color: #e0e0e0;
+}
+
+.legend-color.canceled {
+  background-color: lightsalmon;
 }
