@@ -14,24 +14,24 @@
         <!-- 时间列 -->
         <view class="time-column">
           <view class="time-cell header-cell">时间</view>
-          <view class="time-cell" wx:for="{{timeSlots}}" wx:key="time">{{item}}</view>
+          <view class="time-cell" wx:for="{{timeSlots}}" wx:key="time">{{item.time}}</view>
         </view>
         
         <!-- 教练列 -->
         <block wx:for="{{coaches}}" wx:key="id">
           <view class="coach-column">
-            <view class="coach-cell header-cell">{{item.name}}</view>
+            <view class="coach-cell header-cell">{{item.Name}}</view>
             <view 
-              class="coach-cell {{subItem.status === BOOKING_STATUS.BOOKED ? 'booked' : 'available'}}" 
+              class="coach-cell {{subItem.status}}" 
               wx:for="{{item.slots}}" 
               wx:for-item="subItem"  
               wx:for-index="slotIndex"
               wx:key="time"
-              data-coach-id="{{item.id}}"
+              data-coach-id="{{item.Id}}"
               data-time-index="{{slotIndex}}"
               bindtap="handleBooking"
             >
-              {{subItem.status === BOOKING_STATUS.BOOKED ? '已预定' : '可预定'}}
+              {{subItem.status === BOOKING_STATUS.BOOKED ? '已预定' : subItem.status === BOOKING_STATUS.AVAILABLE ? '可预定' : '已取消' }}
             </view>
           </view>
         </block>

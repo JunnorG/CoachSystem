@@ -1,23 +1,38 @@
 <view class="container">
+  <!-- 用户信息部分 -->
   <view class="user-info">
-    <image class="avatar" src="{{userInfo.avatarUrl}}"></image>
-    <view class="nickname">{{userInfo.nickName}}</view>
-  </view>
-  
-  <view class="credit-info">
-    <view class="credit-title">剩余课时</view>
-    <view class="credit-value">{{credit}} 小时</view>
-    <view class="credit-note">(半小时为一个课时单位)</view>
-  </view>
-  
-  <view class="reservation-history">
-    <view class="section-title">预订记录</view>
-    <view class="history-list">
-      <view class="history-item" wx:for="{{history}}" wx:key="id">
-        <view class="history-date">{{item.date}}</view>
-        <view class="history-field">场地{{item.field}}</view>
-        <view class="history-time">{{item.time}}</view>
+    <image class="avatar" src="../../images/仓鼠.png" mode="aspectFill"></image>
+    <view class="user-detail">
+      <view class="username">
+        <text>{{userInfo.nickName || defaultName}}</text>
+        <button class="edit-btn" bindtap="editUsername">编辑</button>
       </view>
+      <text class="wechat-id">微信ID: {{userInfo.wechatId}}</text>
     </view>
   </view>
+
+  <!-- 分割线 -->
+  <view class="divider"></view>
+  
+  <!-- 功能列表 -->
+  <view class="function-list">
+    <view class="function-item" bindtap="navigateToRemainingCourses">
+      <image class="function-icon" src="../../images/仓鼠.png"></image>
+      <text>剩余课程: {{remainingCourses}}节</text>
+      <image class="arrow" src="../../images/仓鼠.png"></image>
+    </view>
+    
+    <view class="function-item" bindtap="navigateToBuyCourses">
+      <image class="function-icon" src="../../images/仓鼠.png"></image>
+      <text>购买课程</text>
+      <image class="arrow" src="../../images/仓鼠.png"></image>
+    </view>
+    
+    <!-- 可以继续添加其他功能项 -->
+  </view>
+  
+  <!-- 修改用户名的弹窗
+  <modal visible="{{showEditModal}}" title="修改用户名" bindcancel="cancelEdit" bindconfirm="confirmEdit">
+    <input class="input-username" placeholder="请输入新用户名" value="{{newUsername}}" bindinput="inputUsername"/>
+  </modal> -->
 </view>

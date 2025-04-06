@@ -105,6 +105,12 @@
   color: #666;
 }
 
+/* 课程取消状态 */
+.canceled {
+  background-color: lightsalmon;
+  color: #111;
+}
+
 /* 点击效果 */
 .coach-cell:active {
   transform: scale(0.95);

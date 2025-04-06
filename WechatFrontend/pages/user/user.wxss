@@ -1,71 +1,84 @@
 .container {
-  padding: 20px;
+  padding: 20rpx;
+  margin-top: 100rpx;
 }
 
 .user-info {
   display: flex;
-  flex-direction: column;
   align-items: center;
-  margin-bottom: 30px;
+  padding: 30rpx 0;
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
+  margin-left: 20rpx;
+  width: 120rpx;
+  height: 120rpx;
   border-radius: 50%;
 }
 
-.nickname {
-  margin-top: 10px;
-  font-size: 16px;
+.user-detail {
+  margin-left: 30rpx;
+  flex: 1;
+}
+
+.username {
+  display: flex;
+  align-items: center;
+  font-size: 36rpx;
   font-weight: bold;
+  margin-bottom: 10rpx;
 }
 
-.credit-info {
-  background-color: #f5f5f5;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 20px;
-  text-align: center;
+.edit-btn {
+  margin-left: 20rpx;
+  font-size: 24rpx;
+  color: #576b95;
+  background: none;
+  border: none;
+  padding: 0;
+  line-height: 1;
 }
 
-.credit-title {
-  font-size: 14px;
-  color: #666;
+.edit-btn::after {
+  border: none;
 }
 
-.credit-value {
-  font-size: 24px;
-  font-weight: bold;
-  margin: 5px 0;
-  color: #07c160;
-}
-
-.credit-note {
-  font-size: 12px;
+.wechat-id {
+  font-size: 28rpx;
   color: #999;
 }
 
-.section-title {
-  font-size: 16px;
-  font-weight: bold;
-  margin-bottom: 10px;
-  padding-bottom: 5px;
-  border-bottom: 1px solid #eee;
+.divider {
+  height: 20rpx;
+  padding: 20rpx 0;
 }
 
-.history-item {
+.function-list {
+  width: 100%;
+  padding-top: 50rpx;
+  background-color: #eeeeee;
+}
+
+.function-item {
   display: flex;
-  justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #f5f5f5;
+  background-color: white;
+  align-items: center;
+  padding: 30rpx 0;
+  border-bottom: 1rpx solid #f5f5f5;
 }
 
-.history-date {
-  color: #666;
-  font-size: 14px;
+.function-icon {
+  width: 40rpx;
+  height: 40rpx;
+  margin-right: 20rpx;
 }
 
-.history-field, .history-time {
-  font-size: 14px;
+.arrow {
+  width: 30rpx;
+  height: 30rpx;
+  margin-left: auto;
+}
+
+.input-username {
+  padding: 20rpx;
 }

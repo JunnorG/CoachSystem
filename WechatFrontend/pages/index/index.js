@@ -6,11 +6,18 @@ Page({
     currentDate: '2023-11-15',
     startDate: '2023-11-01',
     endDate: '2023-12-31',
-    timeSlots: [], // 时间槽位(10:00-22:00)
     coaches: [
       { id: 1, name: '教练A', slots: [] },
       { id: 2, name: '教练B', slots: [] },
       { id: 3, name: '教练C', slots: [] }
+    ],
+    timeSlots: [],
+    orders: [
+      { coach: { Name: '老李' }, timeSlot: 22, status: BOOKING_STATUS.BOOKED },
+      { coach: { Name: '老李' }, timeSlot: 23, status: BOOKING_STATUS.CANCELED },
+      { coach: { Name: '老李' }, timeSlot: 24, status: BOOKING_STATUS.BOOKED },
+      { coach: { Name: '老李' }, timeSlot: 25
+      , status: BOOKING_STATUS.AVAILABLE },
     ],
     coachesMetadataRes: {
       loading: false,
@@ -31,23 +38,6 @@ Page({
         timeSlots.push(`${hour}:30`);
       }
     }
-
-    // 初始化教练预定数据
-    const coaches = this.data.coaches.map(coach => {
-      // 随机生成一些已预定的时间段
-      const slots = timeSlots.map(time => ({
-        time,
-        status: Math.random() > 0.7 ? BOOKING_STATUS.BOOKED : BOOKING_STATUS.AVAILABLE,
-        bookedBy: null
-      }));
-      return { ...coach, slots };
-    });
-    console.log("timeslots:" + timeSlots)
-    console.log("coaches:" + coaches)
-    this.setData({
-      timeSlots,
-      coaches
-    });
   },
 
   async onShow() {
@@ -60,7 +50,7 @@ Page({
     await this.fetchTennisCoaches();
     
     // 更新教练名字
-    this.updateCoachesFromMetadata();
+    this.transformBookTable()
   },
 
   // 处理预定/取消预定 - 优化版本
@@ -142,7 +132,7 @@ Page({
   },
 
   getCoach(coaches, coachId) {
-    return coaches.find(e => e.id === coachId)
+    return coaches.find(e => e.Id === coachId)
   },
 
   // 日期变化处理
@@ -193,21 +183,34 @@ Page({
     }
   },
 
-  // 从元数据更新教练名字
-  updateCoachesFromMetadata() {
-    if (this.data.coachesMetadataRes.coachMetada.length > 0) {
-      const updatedCoaches = this.data.coaches.map((coach, index) => {
-        // 确保有对应的元数据
-        const metadata = this.data.coachesMetadataRes.coachMetada[index];
-        return {
-          ...coach,
-          name: metadata ? metadata.Name : coach.name
-        };
-      });
-      
-      this.setData({
-        coaches: updatedCoaches
-      });
+  transformBookTable() {
+    // 初始化时间槽位(10:00-22:00，每半小时)
+    const timeSlots = [];
+    for (let hour = 20; hour <= 44; hour++) {
+      timeSlots.push({ time: hour % 2 === 0 ? hour/2 + ':00' : (hour-1)/2 + ':30', slot: hour});
     }
+
+    // 初始化教练预定数据
+    const coaches = this.data.coachesMetadataRes.coachMetada.map(coach => {
+      // 随机生成一些已预定的时间段
+      const slots = timeSlots.map(timeSlot => ({
+        ...timeSlot,
+        status: this.getBookingStatus(coach.Name, timeSlot.slot),
+        bookedBy: null
+      }));
+      return { ...coach, slots };
+    });
+    this.setData({
+      timeSlots: timeSlots,
+      coaches: coaches
+    })
   },
+
+  getBookingStatus(coachName, timeSlot) {
+    const order = this.data.orders.find(item => item.coach.Name === coachName && item.timeSlot === timeSlot)
+    if (order){
+      return order.status
+    }
+    else return BOOKING_STATUS.AVAILABLE
+  }
 });
