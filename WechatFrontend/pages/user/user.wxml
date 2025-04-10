@@ -28,6 +28,11 @@
       <image class="arrow" src="../../images/仓鼠.png"></image>
     </view>
     
+    <view class="function-item" bindtap="navigateToHistory">
+      <image class="function-icon" src="../../images/仓鼠.png"></image>
+      <text>历史订单</text>
+      <image class="arrow" src="../../images/仓鼠.png"></image>
+    </view>
     <!-- 可以继续添加其他功能项 -->
   </view>
   

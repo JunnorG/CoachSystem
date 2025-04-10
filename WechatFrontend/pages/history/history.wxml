@@ -1,0 +1,105 @@
+<view class="container">
+  <view class="back-button" bindtap="navigateBackToUser">
+    <image class="back-icon" src="../../images/back-arrow.png"></image>
+    <text>返回</text>
+  </view>
+
+  <!-- Tab栏 -->
+  <view class="tabs">
+    <view 
+      class="tab {{activeTab === 0 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="0"
+    >
+      未完成
+    </view>
+    <view 
+      class="tab {{activeTab === 1 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="1"
+    >
+      已完成
+    </view>
+    <view 
+      class="tab {{activeTab === 2 ? 'active' : ''}}" 
+      bindtap="switchTab" 
+      data-tab="2"
+    >
+      退订
+    </view>
+  </view>
+
+  <!-- 订单列表 -->
+  <scroll-view class="order-list" scroll-y>
+    <block wx:for="{{orderList}}" wx:key="id">
+      <view class="order-card">
+        <!-- 订单状态和时间 -->
+        <view class="order-header">
+          <text class="order-status">{{item.statusText}}</text>
+          <text class="order-time">{{item.time}}</text>
+        </view>
+        
+        <!-- 教练信息 -->
+        <view class="coach-info">
+          <image class="coach-avatar" src="{{item.coach.avatar}}"></image>
+          <view class="coach-detail">
+            <text class="coach-name">{{item.coach.name}}</text>
+            <text class="coach-level">{{item.coach.level}}</text>
+          </view>
+        </view>
+        
+        <!-- 课程信息 -->
+        <view class="course-info">
+          <view class="info-item">
+            <text class="info-label">课程类型:</text>
+            <text class="info-value">{{item.course.type}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">预约时间:</text>
+            <text class="info-value">{{item.course.time}}</text>
+          </view>
+          <view class="info-item">
+            <text class="info-label">课程时长:</text>
+            <text class="info-value">{{item.course.duration}}分钟</text>
+          </view>
+        </view>
+        
+        <!-- 底部操作区域 -->
+        <view class="order-footer">
+          <text class="order-price">¥{{item.price}}</text>
+          <view class="action-buttons">
+            <button 
+              wx:if="{{activeTab === 0}}" 
+              class="btn cancel-btn" 
+              bindtap="cancelOrder" 
+              data-id="{{item.id}}"
+            >
+              取消订单
+            </button>
+            <button 
+              wx:if="{{activeTab === 0}}" 
+              class="btn confirm-btn" 
+              bindtap="confirmOrder" 
+              data-id="{{item.id}}"
+            >
+              确认完成
+            </button>
+            <button 
+              wx:if="{{activeTab === 2}}" 
+              class="btn reorder-btn" 
+              bindtap="reorder" 
+              data-id="{{item.id}}"
+            >
+              重新预约
+            </button>
+          </view>
+        </view>
+      </view>
+    </block>
+    
+    <view wx:if="{{orderList.length === 0}}" class="empty-tip">
+      <image src="../../images/empty.png" class="empty-img"></image>
+      <text>暂无订单数据</text>
+    </view>
+  </scroll-view>
+</view>

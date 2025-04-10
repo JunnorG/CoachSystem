@@ -104,5 +104,12 @@ Page({
     wx.navigateTo({
       url: '/pages/buyCourses/buyCourses'
     });
+  },
+
+  // 跳转到订单界面
+  navigateToHistory: function() {
+    wx.navigateTo({
+      url: '/pages/history/history'
+    });
   }
 });
