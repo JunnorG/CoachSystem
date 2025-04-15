@@ -68,3 +68,5 @@ docker login --username=3978*****@qq.com crpi-15rouu21vdpsqs2a.cn-shanghai.perso
 docker tag [ImageId] crpi-15rouu21vdpsqs2a.cn-shanghai.personal.cr.aliyuncs.com/ganjun/easybooking:[镜像版本号]
 docker push crpi-15rouu21vdpsqs2a.cn-shanghai.personal.cr.aliyuncs.com/ganjun/easybooking:[镜像版本号]
 ```
+
+
