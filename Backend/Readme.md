@@ -50,3 +50,21 @@
    # 查询学生课时
    curl http://localhost:5000/api/students/学生ID/credits
    ```
+   
+## Docker
+### Local Run
+```commandline
+docker build -t flask-coach-app .
+docker run -d -p 5000:5000 --name coach-app flask-coach-app
+```
+### Pull
+```commandline
+docker login --username=3978*****@qq.com crpi-15rouu21vdpsqs2a.cn-shanghai.personal.cr.aliyuncs.com
+docker pull crpi-15rouu21vdpsqs2a.cn-shanghai.personal.cr.aliyuncs.com/ganjun/easybooking:[镜像版本号]
+```
+### Push
+```commandline
+docker login --username=3978*****@qq.com crpi-15rouu21vdpsqs2a.cn-shanghai.personal.cr.aliyuncs.com
+docker tag [ImageId] crpi-15rouu21vdpsqs2a.cn-shanghai.personal.cr.aliyuncs.com/ganjun/easybooking:[镜像版本号]
+docker push crpi-15rouu21vdpsqs2a.cn-shanghai.personal.cr.aliyuncs.com/ganjun/easybooking:[镜像版本号]
+```
